@@ -1,0 +1,338 @@
+[
+  {
+    "resourceType": "Bundle",
+    "type": "collection",
+    "entry": [
+      {
+        "resource": {
+          "resourceType": "Patient",
+          "id": "smart-1685497",
+          "meta": {
+            "versionId": "1",
+            "lastUpdated": "2018-11-13T01:28:55.861-05:00",
+            "tag": [
+              {
+                "system": "https://smarthealthit.org/tags",
+                "code": "smart-8-2017"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"> <p>Richard Robinson</p> </div>"
+          },
+          "identifier": [
+            {
+              "use": "usual",
+              "type": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/v2/0203",
+                    "code": "MR",
+                    "display": "Medical record number"
+                  }
+                ],
+                "text": "Medical record number"
+              },
+              "system": "http://hospital.smarthealthit.org",
+              "value": "1685497"
+            }
+          ],
+          "active": true,
+          "name": [
+            {
+              "use": "official",
+              "family": ["Robinson"],
+              "given": ["Richard", "R."]
+            }
+          ],
+          "telecom": [
+            {
+              "system": "phone",
+              "value": "800-123-3873",
+              "use": "home"
+            },
+            {
+              "system": "email",
+              "value": "richard.robinson@example.com"
+            }
+          ],
+          "gender": "male",
+          "birthDate": "1969-10-21",
+          "address": [
+            {
+              "use": "home",
+              "line": ["88 Hill RdApt 13"],
+              "city": "Broken Arrow",
+              "state": "OK",
+              "postalCode": "74014",
+              "country": "USA"
+            }
+          ]
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "Medication",
+          "code": {
+            "coding": [
+              {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "762675",
+                "display": "Methylprednisolone 4 MG Oral Tablet"
+              }
+            ],
+            "text": "Methylprednisolone 4 MG Oral Tablet"
+          }
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "Medication",
+          "code": {
+            "coding": [
+              {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "828348",
+                "display": "Cyclobenzaprine hydrochloride 10 MG Oral Tablet"
+              }
+            ],
+            "text": "Cyclobenzaprine hydrochloride 10 MG Oral Tablet"
+          }
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "Medication",
+          "code": {
+            "coding": [
+              {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "311945",
+                "display": "Niacin 1000 MG Extended Release Tablet [Niaspan]"
+              }
+            ],
+            "text": "Niacin 1000 MG Extended Release Tablet [Niaspan]"
+          }
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "Medication",
+          "code": {
+            "coding": [
+              {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "213186",
+                "display": "sibutramine 10 MG Oral Capsule [Meridia]"
+              }
+            ],
+            "text": "sibutramine 10 MG Oral Capsule [Meridia]"
+          }
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "Medication",
+          "code": {
+            "coding": [
+              {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "854873",
+                "display": "zolpidem 10 MG Oral Tablet"
+              }
+            ],
+            "text": "zolpidem 10 MG Oral Tablet"
+          }
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "Medication",
+          "code": {
+            "coding": [
+              {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "311946",
+                "display": "Niacin 500 MG Extended Release Tablet [Niaspan]"
+              }
+            ],
+            "text": "Niacin 500 MG Extended Release Tablet [Niaspan]"
+          }
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "Medication",
+          "code": {
+            "coding": [
+              {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "859753",
+                "display": "rosuvastatin 20 MG Oral Tablet [Crestor]"
+              }
+            ],
+            "text": "rosuvastatin 20 MG Oral Tablet [Crestor]"
+          }
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "Medication",
+          "code": {
+            "coding": [
+              {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "308194",
+                "display": "Amoxicillin 875 MG Oral Tablet"
+              }
+            ],
+            "text": "Amoxicillin 875 MG Oral Tablet"
+          }
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "Medication",
+          "code": {
+            "coding": [
+              {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "859749",
+                "display": "rosuvastatin 10 MG Oral Tablet [Crestor]"
+              }
+            ],
+            "text": "rosuvastatin 10 MG Oral Tablet [Crestor]"
+          }
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "Medication",
+          "code": {
+            "coding": [
+              {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "197885",
+                "display": "Hydrochlorothiazide 12.5 MG / Lisinopril 10 MG Oral Tablet"
+              }
+            ],
+            "text": "Hydrochlorothiazide 12.5 MG / Lisinopril 10 MG Oral Tablet"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "resourceType": "Bundle",
+    "type": "collection",
+    "entry": [
+      {
+        "resource": {
+          "resourceType": "Patient",
+          "id": "smart-1685497",
+          "meta": {
+            "versionId": "1",
+            "lastUpdated": "2018-11-01T02:28:54.004-04:00",
+            "tag": [
+              {
+                "system": "https://smarthealthit.org/tags",
+                "code": "smart-8-2017"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"> <p>Richard Robinson</p> </div>"
+          },
+          "identifier": [
+            {
+              "use": "usual",
+              "type": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/v2/0203",
+                    "code": "MR",
+                    "display": "Medical record number"
+                  }
+                ],
+                "text": "Medical record number"
+              },
+              "system": "http://hospital.smarthealthit.org",
+              "value": "1685497"
+            }
+          ],
+          "active": true,
+          "name": [
+            {
+              "use": "official",
+              "family": ["Robinson"],
+              "given": ["Richard", "R."]
+            }
+          ],
+          "telecom": [
+            {
+              "system": "phone",
+              "value": "800-123-3873",
+              "use": "home"
+            },
+            {
+              "system": "email",
+              "value": "richard.robinson@example.com"
+            }
+          ],
+          "gender": "male",
+          "birthDate": "1969-10-21",
+          "address": [
+            {
+              "use": "home",
+              "line": ["88 Hill RdApt 13"],
+              "city": "Broken Arrow",
+              "state": "OK",
+              "postalCode": "74014",
+              "country": "USA"
+            }
+          ]
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "Medication",
+          "code": {
+            "coding": [
+              {
+                "system": "foobar",
+                "code": "AAA"
+              },
+              {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "197885",
+                "display": "Hydrochlorothiazide 12.5 MG / Lisinopril 10 MG Oral Tablet"
+              }
+            ],
+            "text": "Hydrochlorothiazide 12.5 MG / Lisinopril 10 MG Oral Tablet"
+          }
+        }
+      },
+      {
+        "resource": {
+          "resourceType": "Medication",
+          "code": {
+            "coding": [
+              {
+                "system": "foobar",
+                "code": "BBB"
+              },
+              {
+                "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "code": "828348",
+                "display": "Cyclobenzaprine hydrochloride 10 MG Oral Tablet"
+              }
+            ],
+            "text": "Cyclobenzaprine hydrochloride 10 MG Oral Tablet"
+          }
+        }
+      }
+    ]
+  }
+]
