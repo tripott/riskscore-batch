@@ -1,0 +1,16 @@
+{
+  "name": "riskscore-batch-api",
+  "version": "1.0.0",
+  "description": "An ExpressJS REST API used by the riskscore batch client user interface app.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "ramda": "^0.26.1"
+  }
+}
