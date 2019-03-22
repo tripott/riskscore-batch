@@ -2,11 +2,12 @@ const fs = require('fs')
 const { Transform } = require('stream')
 const JSONStream = require('JSONStream')
 
-module.exports = ({ fhirBundleDataPath }) => {
+const processBundles = ({ fhirBundleDataPath }) => {
   const jsonInput = fs.createReadStream(fhirBundleDataPath, {
     encoding: 'utf8'
   })
   const jsonToObject = JSONStream.parse('*')
+
   const objectToString = new Transform({
     writableObjectMode: true,
     transform(bundle, encoding, callback) {
@@ -15,5 +16,13 @@ module.exports = ({ fhirBundleDataPath }) => {
     }
   })
 
-  return jsonInput.pipe(jsonToObject).pipe(objectToString)
+  return (
+    jsonInput
+      .pipe(jsonToObject)
+      //.pipe(reportProgress)
+      .pipe(objectToString)
+  )
+  //  .on('finish', () => console.log({ stats }))
 }
+
+module.exports = { processBundles }
