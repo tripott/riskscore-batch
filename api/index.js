@@ -3,7 +3,7 @@ const app = require('express')()
 const fs = require('fs')
 const { Transform } = require('stream')
 const JSONStream = require('JSONStream')
-const { getHome } = require('./lib/fetch-mw-risk-api')
+const { getRiskScoreData } = require('./lib/fetch-mw-risk-api')
 //const fetch = require('isomorphic-fetch')
 //const { processBundles } = require('./lib/process-bundles')
 const { merge } = require('ramda')
@@ -32,7 +32,7 @@ const objectToString = new Transform({
   writableObjectMode: true,
   transform(bundle, encoding, callback) {
     console.log({ objectToStringBundle: JSON.stringify(bundle) })
-    this.push(bundle.name + ' ')
+    this.push(JSON.stringify(bundle) + ' ')
     callback()
   }
 })
@@ -40,30 +40,52 @@ const objectToString = new Transform({
 app.get('/batchprocess', medwiseRiskAPIAuthMiddleware, (req, res, next) => {
   const { access_token } = req
 
-  const getHomeStream = through2({ objectMode: true }, async function(
-    chunk,
+  // const getHomeStream = through2({ objectMode: true }, async function(
+  //   chunk,
+  //   enc,
+  //   callback
+  // ) {
+  //   const result = await getHome({ access_token })
+  //
+  //   this.push(result)
+  //   callback()
+  // })
+  //
+  // getHomeStream.on('data', function(data) {
+  //   const toString = Object.prototype.toString.call(data)
+  //   console.log('type of data:', toString)
+  //   console.log('data:', data, '\n')
+  // })
+  //
+  // getHomeStream.on('error', err => {
+  //   console.log('!', err.message)
+  // })
+
+  const getRiskScoreDataStream = through2({ objectMode: true }, async function(
+    bundle,
     enc,
     callback
   ) {
-    const result = await getHome({ access_token })
-
-    this.push(result)
+    const scoreData = await getRiskScoreData({ access_token, bundle })
+    console.log({ getRiskScoreDataStream: scoreData })
+    bundle.scoreData = scoreData
+    this.push(bundle)
     callback()
   })
 
-  getHomeStream.on('data', function(data) {
+  getRiskScoreDataStream.on('data', function(data) {
     const toString = Object.prototype.toString.call(data)
     console.log('type of data:', toString)
     console.log('data:', data, '\n')
   })
 
-  getHomeStream.on('error', err => {
+  getRiskScoreDataStream.on('error', err => {
     console.log('!', err.message)
   })
 
   jsonInput
     .pipe(jsonToObject)
-    .pipe(getHomeStream)
+    .pipe(getRiskScoreDataStream)
     .pipe(reportProgress)
     .pipe(objectToString)
     .pipe(res)

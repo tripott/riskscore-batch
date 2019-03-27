@@ -24,15 +24,48 @@ The response should look similar to this. The `id` property represents the profi
 
 const fetch = require('fetch-retry')
 
-module.exports = async ({ access_token, bundle }) =>
-  fetch(`https://trhc-prod.apigee.net/medwise/api/profiles`, {
-    retries: 3,
-    retryDelay: 100,
-    retryOn: [429, 503, 500],
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${access_token}`
-    },
-    body: JSON.stringify(bundle)
-  })
+module.exports = async ({ access_token, bundle }) => {
+  const result = await fetch(
+    `https://trhc-prod.apigee.net/medwise/api/profiles`,
+    {
+      retries: 3,
+      retryDelay: 100,
+      retryOn: [429, 503, 500],
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${access_token}`
+      },
+      body: JSON.stringify(bundle)
+    }
+  ).then(res => res.json())
+  // sample result
+  //{id: "d0bdab64-ab22-a668-95d9-b459ec5faae9", ok: true}
+  const scoredata = await fetch(
+    `https://trhc-prod.apigee.net/medwise/api/profiles/${result.id}/scoredata`,
+    {
+      retries: 3,
+      retryDelay: 100,
+      retryOn: [429, 503, 500],
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    }
+  )
+    .then(res => res.json())
+    .then(scoreResult => scoreResult.values[0].value)
+
+  return scoredata
+  // Sample scoredata
+  /*
+  {
+    "values": [
+      {
+        "name": "medicationRiskScore",
+        "value": "5"
+      }
+    ]
+  }
+  */
+}
