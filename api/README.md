@@ -2,8 +2,8 @@
 
 ## TODO
 
+- Create new branch and commit all work in branch.
 - Review code within api/lib/fetch-mw-risk-api.
-
 - Create the following 4 visualizations fetch functions similar to **get-home.js**, **post-bundle.js**, and **get-risk-score-data.js**:
   - create **get-risk-score-viz.js**
   - create **get-matrix-viz.js**
