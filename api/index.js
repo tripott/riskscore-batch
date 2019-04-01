@@ -4,13 +4,14 @@ const fs = require('fs')
 const { Transform } = require('stream')
 const JSONStream = require('JSONStream')
 const { postBundle, getRiskScoreData } = require('./lib/fetch-mw-risk-api')
-const { merge } = require('ramda')
+const { merge, pathOr } = require('ramda')
 const { medwiseRiskAPIAuthMiddleware } = require('./lib/mw-risk-api-auth-mw')
 const calcRiskLevel = require('./lib/calc-risk-level')
 const through2 = require('through2')
 
 let stats = {
   count: 0,
+  errors: 0,
   veryLow: 0,
   low: 0,
   moderate: 0,
@@ -18,25 +19,56 @@ let stats = {
   veryHigh: 0
 }
 
+/* bundle sample with med risk score (mrs) property
+  {
+
+    mrs: {
+      scoreData: 5,
+      status: "not started"
+    }
+  }
+*/
+
 const jsonInput = fs.createReadStream(`./data/fhir-bundles/bundles.json`, {
   encoding: 'utf8'
 })
 
 const jsonToObject = JSONStream.parse('*')
 
+const mergeMedRiskScoreStatusProp = through2({ objectMode: true }, function(
+  bundle,
+  enc,
+  callback
+) {
+  const medRiskScoreStatus = {
+    mrs: {
+      scoreData: null,
+      status: null
+    }
+  }
+
+  callback(null, merge(bundle, medRiskScoreStatus))
+})
+
 const calcStats = through2({ objectMode: true }, async function(
   bundleWithScore,
   enc,
   callback
 ) {
-  const { scoreData } = bundleWithScore
-  const riskLevel = calcRiskLevel(parseInt(scoreData, 10))
+  const scoreData = pathOr(null, ['mrs', 'scoreData'], bundleWithScore)
+  const riskLevel = scoreData ? calcRiskLevel(parseInt(scoreData, 10)) : null
 
-  const newStats = {
-    count: stats.count + 1,
-    [riskLevel]: stats[riskLevel] + 1
-  }
+  const newStats = scoreData
+    ? {
+        count: stats.count + 1,
+        [riskLevel]: stats[riskLevel] + 1
+      }
+    : {
+        count: stats.count + 1,
+        errors: stats.errors + 1
+      }
 
+  // mutate high-scoped stats obj with new counts
   stats = merge(stats, newStats)
 
   callback(null, bundleWithScore)
@@ -80,7 +112,17 @@ app.get('/batchprocess', medwiseRiskAPIAuthMiddleware, (req, res, next) => {
       profileId => getRiskScoreData({ access_token, profileId })
     )
 
-    this.push(merge(bundle, { scoreData }))
+    //this.push(merge(bundle, { scoreData }))
+
+    this.push(
+      merge(bundle, {
+        mrs: {
+          scoreData: scoreData,
+          status: 'complete'
+        }
+      })
+    )
+
     callback()
   })
 
@@ -96,6 +138,7 @@ app.get('/batchprocess', medwiseRiskAPIAuthMiddleware, (req, res, next) => {
 
   jsonInput
     .pipe(jsonToObject)
+    .pipe(mergeMedRiskScoreStatusProp)
     .pipe(getRiskScoreDataStream)
     .pipe(calcStats)
     .pipe(logProgressToConsole)
