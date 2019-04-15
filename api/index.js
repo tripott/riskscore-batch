@@ -35,10 +35,6 @@ let stats = {
   }
 */
 
-const jsonInput = fs.createReadStream(`./data/fhir-bundles/bundles.json`, {
-  encoding: 'utf8'
-})
-
 const jsonToObject = JSONStream.parse('*')
 
 const mergeMedRiskScoreStatusProp = through2({ objectMode: true }, function(
@@ -53,7 +49,9 @@ const mergeMedRiskScoreStatusProp = through2({ objectMode: true }, function(
     }
   }
 
-  callback(null, merge(bundle, medRiskScoreStatus))
+  bundle = merge(bundle, medRiskScoreStatus)
+
+  callback(null, bundle)
 })
 
 const calcStats = through2({ objectMode: true }, async function(
@@ -72,6 +70,12 @@ const calcStats = through2({ objectMode: true }, async function(
           (stats.sumScores + scoreDataInt) / (stats.counts.total + 1),
         highestScore:
           scoreDataInt > stats.highestScore ? scoreDataInt : stats.highestScore,
+        lowestScore:
+          stats.counts.total === 0
+            ? scoreDataInt
+            : scoreDataInt < stats.lowestScore
+            ? scoreDataInt
+            : stats.lowestScore,
         counts: {
           total: stats.counts.total + 1,
           [riskLevel]: stats.counts[riskLevel] + 1
@@ -110,6 +114,7 @@ const logProgressToConsole = through2({ objectMode: true }, async function(
   process.stdout.write(`      Sum: ${stats.sumScores}\n`)
   process.stdout.write(`      Avg: ${stats.averageScore}\n`)
   process.stdout.write(`  Highest: ${stats.highestScore}\n`)
+  process.stdout.write(`   Lowest: ${stats.lowestScore}\n`)
   process.stdout.write(`Err Count: ${stats.counts.errors}\n`)
 
   callback(null, bundleWithScore)
@@ -122,6 +127,13 @@ const objectToString = new Transform({
     callback()
   }
 })
+
+// app.get(`/profiles/:id/riskScoreData`, medwiseRiskAPIAuthMiddleware, (req, res, next) => {
+//     const { access_token } = req
+//
+//   res.status(200).send(getRiskScoreData({ access_token, req.params.id }))
+//
+// } )
 
 app.get('/batchprocess', medwiseRiskAPIAuthMiddleware, (req, res, next) => {
   const { access_token } = req
@@ -156,7 +168,9 @@ app.get('/batchprocess', medwiseRiskAPIAuthMiddleware, (req, res, next) => {
   // getRiskScoreDataStream.on('error', err => {
   //   console.log('!', err.message)
   // })
-
+  const jsonInput = fs.createReadStream(`./data/fhir-bundles/bundles.json`, {
+    encoding: 'utf8'
+  })
   jsonInput
     .pipe(jsonToObject)
     .pipe(mergeMedRiskScoreStatusProp)
