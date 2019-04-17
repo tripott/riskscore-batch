@@ -14,7 +14,10 @@ module.exports = async ({ access_token, profileId }) => {
     }
   )
     .then(res => res.json())
-    .then(scoreResult => scoreResult.values[0].value)
+    .then(scoreResult => {
+      return scoreResult.values[0].value
+    })
+    .catch(err => console.log({ err }))
 
   return scoredata
 }
