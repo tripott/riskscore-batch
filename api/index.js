@@ -3,7 +3,11 @@ const app = require('express')()
 const fs = require('fs')
 const { Transform } = require('stream')
 const JSONStream = require('JSONStream')
-const { postBundle, getRiskScoreData } = require('./lib/fetch-mw-risk-api')
+const {
+  postBundle,
+  getRiskScoreData,
+  getRisckScoreViz
+} = require('./lib/fetch-mw-risk-api')
 const { merge, pathOr } = require('ramda')
 const { medwiseRiskAPIAuthMiddleware } = require('./lib/mw-risk-api-auth-mw')
 const calcRiskLevel = require('./lib/calc-risk-level')
@@ -148,6 +152,17 @@ app.get('/batchprocess', medwiseRiskAPIAuthMiddleware, (req, res, next) => {
   //.pipe(someFSWriteStream)
 })
 
+app.get(
+  '/profiles/:id/riskscore',
+  medwiseRiskAPIAuthMiddleware,
+  async (req, res, next) => {
+    const { access_token } = req
+    const { id } = req.params
+    const viz = await getRisckScoreViz({ access_token, id })
+    console.log(access_token, req.params.id, viz)
+    res.send(viz)
+  }
+)
 app.get('/stats', (req, res, next) => res.status(200).send(stats))
 
 app.listen(4000, () => console.log('Up on 4000'))
